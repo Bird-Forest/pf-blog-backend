@@ -5,15 +5,15 @@ require("dotenv").config();
 
 const app = express();
 const formatsLogger = app.get("env") === "development" ? "dev" : "short";
-const itemsRouter = require("./routes/api/items");
+const postsRouter = require("./routes/api/posts");
 const userRouter = require("./routes/api/users");
 
 app.use(logger(formatsLogger));
 app.use(cors());
 app.use(express.json());
-app.use(express.static("public"));
+app.use(express.static("uploads"));
 
-app.use("/api/items", itemsRouter);
+app.use("/api/posts", postsRouter);
 app.use("/api/users", userRouter);
 
 app.use((req, res) => {
