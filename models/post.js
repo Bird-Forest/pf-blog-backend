@@ -15,7 +15,7 @@ const postSchema = new Schema(
       required: true,
       unique: true,
     },
-    tags: {
+    tag: {
       type: String,
       required: true,
       enum: tagsList,
@@ -24,7 +24,7 @@ const postSchema = new Schema(
       type: Number,
       default: 0,
     },
-    imageUrl: String,
+    imageUrl: { type: String },
   },
   { versionKey: false, timestamps: true }
 );
@@ -34,7 +34,7 @@ postSchema.post("save", validateMongoose);
 const addSchema = Joi.object({
   title: Joi.string().required(),
   text: Joi.string().required(),
-  tegs: Joi.string()
+  tag: Joi.string()
     .valid(...tagsList)
     .required(),
   imageUrl: Joi.string(),
