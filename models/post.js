@@ -2,7 +2,7 @@ const { Schema, model } = require("mongoose");
 const Joi = require("joi");
 const { validateMongoose } = require("../middlewares/index");
 
-const tagsList = ["animals", "recipes", "children", "health"];
+const tagsList = ["animals", "hobby", "children", "health"];
 
 const postSchema = new Schema(
   {
@@ -45,7 +45,7 @@ const updateSchema = Joi.object({
   text: Joi.string(),
   imageUrl: Joi.string(),
   viewsCount: Joi.number(),
-  tags: Joi.string()
+  tag: Joi.string()
     .valid(...tagsList)
     .required(),
 });
