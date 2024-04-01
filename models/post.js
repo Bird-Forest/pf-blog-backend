@@ -44,10 +44,7 @@ const updateSchema = Joi.object({
   title: Joi.string(),
   text: Joi.string(),
   imageUrl: Joi.string(),
-  viewsCount: Joi.number(),
-  tag: Joi.string()
-    .valid(...tagsList)
-    .required(),
+  tag: Joi.string().valid(...tagsList),
 });
 
 const schemas = {

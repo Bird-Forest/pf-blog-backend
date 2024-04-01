@@ -15,7 +15,7 @@ const getPostById = async (req, res) => {
   if (!result) {
     throw HttpError(404, "Not found");
   }
-  console.log("getPostById", result);
+  // console.log("getPostById", result);
   res.json(result);
 };
 
@@ -35,20 +35,31 @@ const deletePost = async (req, res) => {
   if (!result) {
     throw HttpError(404, "Not found");
   }
-  console.log(result);
+  // console.log(result);
   res.status(204).json({
     message: "Delete success",
   });
 };
 
 const updatePost = async (req, res) => {
-  // const { id } = req.params;
-  const result = await Post.findByIdAndUpdate(req.body, { new: true });
+  const { id } = req.params;
+  // console.log("updatePost ID", id);
+
+  // const { imageUrl, tag, title, text } = req.body;
+  // console.log("updatePost POST", req.body);
+  const result = await Post.findByIdAndUpdate(
+    id,
+    req.body,
+    // { imageUrl, tag, title, text },
+    { new: true }
+  );
   if (!result) {
     throw HttpError(404, "Not found");
   }
 
-  res.status(201).json(result);
+  // console.log("RESULT", result);
+  res.status(201).json({ message: "Success" });
+  // res.status(201).json(result);
 };
 
 module.exports = {
