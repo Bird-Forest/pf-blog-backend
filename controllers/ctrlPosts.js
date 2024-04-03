@@ -11,6 +11,7 @@ const getAllPosts = async (req, res) => {
 
 const getPostById = async (req, res) => {
   const { id } = req.params;
+  console.log(id);
   const result = await Post.findById(id);
   if (!result) {
     throw HttpError(404, "Not found");
@@ -31,6 +32,7 @@ const addPost = async (req, res) => {
 
 const deletePost = async (req, res) => {
   const { id } = req.params;
+  console.log("deletePost", id);
   const result = await Post.findByIdAndDelete(id);
   if (!result) {
     throw HttpError(404, "Not found");
