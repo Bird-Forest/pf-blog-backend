@@ -47,9 +47,14 @@ const updateSchema = Joi.object({
   tag: Joi.string().valid(...tagsList),
 });
 
+const likeShema = Joi.object({
+  viewsCount: Joi.number(),
+});
+
 const schemas = {
   addSchema,
   updateSchema,
+  likeShema,
 };
 
 const Post = model("post", postSchema);

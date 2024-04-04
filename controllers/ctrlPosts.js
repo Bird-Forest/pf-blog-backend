@@ -64,10 +64,24 @@ const updatePost = async (req, res) => {
   // res.status(201).json(result);
 };
 
+const updateLikes = async (req, res) => {
+  const { id } = req.params;
+  // const { count } = req.body;
+  console.log("COUNT", req.body);
+  const result = await Post.findByIdAndUpdate(id, req.body, { new: true });
+  if (!result) {
+    throw HttpError(404, "Not found");
+  }
+
+  console.log("RESULT", result);
+  res.status(201).json({ message: "Success" });
+};
+
 module.exports = {
   getAllPosts: ctrlWrapper(getAllPosts),
   addPost: ctrlWrapper(addPost),
   getPostById: ctrlWrapper(getPostById),
   deletePost: ctrlWrapper(deletePost),
   updatePost: ctrlWrapper(updatePost),
+  updateLikes: ctrlWrapper(updateLikes),
 };
