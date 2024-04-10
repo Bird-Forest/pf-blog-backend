@@ -4,6 +4,7 @@ const uploadImg = require("./uploadImg");
 const HttpError = require("./HttpError");
 const validateBody = require("./validateBody");
 const isValidId = require("./isValidId");
+// const authenticate = require("./authenticate");
 
 module.exports = {
   validateMongoose,
@@ -12,4 +13,5 @@ module.exports = {
   HttpError,
   validateBody,
   isValidId,
+  // authenticate,
 };

@@ -15,12 +15,6 @@ router.put(
   validateBody(schemas.updateSchema),
   ctrl.updatePost
 );
-router.patch(
-  "/:id/counter",
-  isValidId,
-  validateBody(schemas.likeShema),
-  ctrl.updateLikes
-);
 
 // ****** UPLOAD FILE
 router.post("/upload", uploadImg.single("image"), (req, res) => {

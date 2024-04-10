@@ -1,6 +1,7 @@
 const { Schema, model } = require("mongoose");
 const Joi = require("joi");
-const { validateMongoose } = require("../middlewares/index");
+const { validateMongoose } = require("../middlewares");
+// const { validateMongoose } = require("../middlewares/index");
 
 const tagsList = ["animals", "hobby", "children", "health"];
 
@@ -13,17 +14,13 @@ const postSchema = new Schema(
     text: {
       type: String,
       required: true,
-      unique: true,
     },
     tag: {
       type: String,
       required: true,
       enum: tagsList,
     },
-    viewsCount: {
-      type: Number,
-      default: 0,
-    },
+
     imageUrl: { type: String },
   },
   { versionKey: false, timestamps: true }
@@ -47,14 +44,9 @@ const updateSchema = Joi.object({
   tag: Joi.string().valid(...tagsList),
 });
 
-const likeShema = Joi.object({
-  viewsCount: Joi.number(),
-});
-
 const schemas = {
   addSchema,
   updateSchema,
-  likeShema,
 };
 
 const Post = model("post", postSchema);
