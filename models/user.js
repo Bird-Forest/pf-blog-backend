@@ -20,14 +20,16 @@ const userSchema = new Schema(
     },
     avatar: {
       type: String,
+      default:
+        "https://cdn.pixabay.com/photo/2017/01/31/23/08/boy-2028012_640.png",
     },
-    viewsCount: {
+    likes: {
       type: Number,
       default: 0,
     },
     token: {
       type: String,
-      default: "",
+      default: " ",
     },
   },
   { versionKey: false, timestamps: true }
@@ -51,7 +53,7 @@ const loginSchema = Joi.object({
 });
 
 const likeShema = Joi.object({
-  viewsCount: Joi.number(),
+  likes: Joi.number(),
 });
 
 const schemas = {

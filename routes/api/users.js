@@ -6,13 +6,14 @@ const router = express.Router();
 // const { schemas } = require("../../models/user");
 // const ctrl = require("../../controllers/authUser");
 const ctrl = require("../../controllers/ctrlUsers");
+const authenticate = require("../../middlewares/authenticate");
 
 router.post("/signup", validateBody(schemas.registerSchema), ctrl.register);
 router.post("/signin", validateBody(schemas.loginSchema), ctrl.login);
+router.post("/logout", authenticate, ctrl.logout);
 router.get("/:id", ctrl.getUser);
-
 router.patch(
-  "/:id/counter",
+  "/:id/likes",
   isValidId,
   validateBody(schemas.likeShema),
   ctrl.updateLikes

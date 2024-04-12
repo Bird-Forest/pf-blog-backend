@@ -20,8 +20,12 @@ const postSchema = new Schema(
       required: true,
       enum: tagsList,
     },
-
     imageUrl: { type: String },
+    owner: {
+      type: Schema.Types.ObjectId,
+      ref: "user",
+      requied: true,
+    },
   },
   { versionKey: false, timestamps: true }
 );

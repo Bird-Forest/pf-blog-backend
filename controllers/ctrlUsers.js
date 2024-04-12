@@ -27,14 +27,16 @@ const register = async (req, res) => {
   const token = jwt.sign({ id: newUser._id }, SEKRET_KEY, { expiresIn: "3h" });
   await User.findByIdAndUpdate(newUser._id, { token });
 
-  res.status(201).json({
-    id: newUser._id,
-    name: newUser.name,
-    email: newUser.email,
-    viewsCount: newUser.viewsCount,
-    avatar: newUser.avatar,
-    token: newUser.token,
-  });
+  res.status(201).json(
+    {
+      id: newUser._id,
+      name: newUser.name,
+      email: newUser.email,
+      likes: newUser.likes,
+      avatar: newUser.avatar,
+    },
+    token
+  );
 };
 
 const login = async (req, res) => {
@@ -54,12 +56,22 @@ const login = async (req, res) => {
   await User.findByIdAndUpdate(user._id, { token });
 
   res.status(201).json({
-    id: user._id,
-    name: user.name,
-    email: user.name,
-    viewsCount: user.viewsCount,
-    avatar: user.avatar,
-    token: user.token,
+    user: {
+      name: user.name,
+      email: user.email,
+      likes: user.likes,
+      avatar: user.avatar,
+    },
+    token,
+  });
+};
+
+const logout = async (req, res) => {
+  const { _id } = req.user;
+  await User.findByIdAndDelete(_id, { token: "" });
+  // User.findByIdAndDelete(user);
+  res.status(204).json({
+    message: "Logout success",
   });
 };
 
@@ -72,16 +84,16 @@ const getUser = async (req, res) => {
     throw HttpError(404, "Not found");
   }
 
-  const user = {
-    id: result._id,
-    name: result.name,
-    email: result.email,
-    avatar: result.avatar,
-    viewsCount: result.viewsCount,
-    token: result.token,
-  };
+  // const user = {
+  //   id: result._id,
+  //   name: result.name,
+  //   email: result.email,
+  //   avatar: result.avatar,
+  //   likes: result.likes,
+  //   token: result.token,
+  // };
 
-  res.json(user);
+  res.json(result);
 };
 
 const updateLikes = async (req, res) => {
@@ -98,6 +110,7 @@ const updateLikes = async (req, res) => {
 module.exports = {
   register: ctrlWrapper(register),
   login: ctrlWrapper(login),
+  logout: ctrlWrapper(logout),
   getUser: ctrlWrapper(getUser),
   updateLikes: ctrlWrapper(updateLikes),
 };

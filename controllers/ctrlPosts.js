@@ -1,13 +1,19 @@
 const { ctrlWrapper, HttpError } = require("../middlewares");
 const { Post } = require("../models/post");
-
+// ***
 const getAllPosts = async (req, res) => {
   // const { page = 1, limit = 10 } = req.query;
   // const skip = (page - 1) * limit;
-  const result = await Post.find();
+  const result = await Post.find().populate("owner", "name avatar likes");
   res.json(result);
 };
-
+// ***
+const getUserPosts = async (req, res) => {
+  const { _id: owner } = req.user;
+  const result = await Post.find({ owner });
+  res.json(result);
+};
+// ***
 const getPostById = async (req, res) => {
   const { id } = req.params;
   console.log(id);
@@ -17,17 +23,22 @@ const getPostById = async (req, res) => {
   }
   res.json(result);
 };
-
+// ***
 const addPost = async (req, res) => {
+  // const post = req.body;
+
   // console.log("ADD POST", req.body);
-  // const { _id: owner } = req.user;
-  // const result = await Post.create({ ...req.body, owner });
+  // const { post } = req.body;
+  const { _id: owner } = req.user;
+  console.log(owner);
+  const result = await Post.create({ ...req.body, owner });
+  console.log(result);
   // const result = await Post.create({ ...req.body });
-  const result = await Post.create(req.body);
+  // const result = await Post.create(req.body);
   // console.log(result);
   res.status(201).json(result);
 };
-
+// ***
 const deletePost = async (req, res) => {
   const { id } = req.params;
   console.log("deletePost", id);
@@ -40,7 +51,7 @@ const deletePost = async (req, res) => {
     message: "Delete success",
   });
 };
-
+// ***
 const updatePost = async (req, res) => {
   const { id } = req.params;
   const result = await Post.findByIdAndUpdate(id, req.body, { new: true });
@@ -53,6 +64,7 @@ const updatePost = async (req, res) => {
 
 module.exports = {
   getAllPosts: ctrlWrapper(getAllPosts),
+  getUserPosts: ctrlWrapper(getUserPosts),
   addPost: ctrlWrapper(addPost),
   getPostById: ctrlWrapper(getPostById),
   deletePost: ctrlWrapper(deletePost),
