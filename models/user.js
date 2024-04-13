@@ -20,8 +20,7 @@ const userSchema = new Schema(
     },
     avatar: {
       type: String,
-      default:
-        "https://cdn.pixabay.com/photo/2017/01/31/23/08/boy-2028012_640.png",
+      default: " ",
     },
     likes: {
       type: Number,

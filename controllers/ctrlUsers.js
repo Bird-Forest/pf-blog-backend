@@ -4,6 +4,7 @@ const { User } = require("../models/user");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 require("dotenv").config();
+const gravatar = require("gravatar");
 const { SEKRET_KEY } = process.env;
 // const { User } = require("../models/user.");
 
@@ -16,27 +17,29 @@ const register = async (req, res) => {
   if (user) throw HttpError(409, "Email already in use");
 
   const hashPassword = await bcrypt.hash(password, 10);
+  const avatarURL = gravatar.url(email);
 
   const newUser = await User.create({
     ...req.body,
     name,
     email,
+    avatar: avatarURL,
     password: hashPassword,
   });
   // console.log("NewUser", newUser._id);
   const token = jwt.sign({ id: newUser._id }, SEKRET_KEY, { expiresIn: "3h" });
   await User.findByIdAndUpdate(newUser._id, { token });
 
-  res.status(201).json(
-    {
+  res.status(201).json({
+    user: {
       id: newUser._id,
       name: newUser.name,
       email: newUser.email,
-      likes: newUser.likes,
+      likes: 0,
       avatar: newUser.avatar,
     },
-    token
-  );
+    token,
+  });
 };
 
 const login = async (req, res) => {
@@ -98,13 +101,14 @@ const getUser = async (req, res) => {
 
 const updateLikes = async (req, res) => {
   const { id } = req.params;
+  // const {likes} = req.body
   console.log("COUNT", req.body);
   const result = await User.findByIdAndUpdate(id, req.body, { new: true });
   if (!result) {
     throw HttpError(404, "Not found");
   }
   // console.log("RESULT", result);
-  res.status(201).json({ message: "Success" });
+  res.status(201).json(result);
 };
 
 module.exports = {
