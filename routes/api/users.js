@@ -11,7 +11,7 @@ const authenticate = require("../../middlewares/authenticate");
 router.post("/signup", validateBody(schemas.registerSchema), ctrl.register);
 router.post("/signin", validateBody(schemas.loginSchema), ctrl.login);
 router.post("/logout", authenticate, ctrl.logout);
-router.get("/:id", ctrl.getUser);
+router.get("/:id", authenticate, ctrl.getUser);
 router.patch(
   "/:id/likes",
   isValidId,

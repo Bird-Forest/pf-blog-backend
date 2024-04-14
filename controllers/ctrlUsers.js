@@ -60,6 +60,7 @@ const login = async (req, res) => {
 
   res.status(201).json({
     user: {
+      id: user._id,
       name: user.name,
       email: user.email,
       likes: user.likes,
@@ -81,12 +82,14 @@ const logout = async (req, res) => {
 const getUser = async (req, res) => {
   const { id } = req.params;
   console.log("ID", id);
-  const result = await User.findById(id);
+  const user = await User.findById(id);
+  const token = user.token;
 
-  if (!result) {
+  if (!user) {
     throw HttpError(404, "Not found");
   }
-
+  console.log(user);
+  console.log(token);
   // const user = {
   //   id: result._id,
   //   name: result.name,
@@ -96,7 +99,16 @@ const getUser = async (req, res) => {
   //   token: result.token,
   // };
 
-  res.json(result);
+  res.status(201).json({
+    user: {
+      id: user._id,
+      name: user.name,
+      email: user.email,
+      likes: user.likes,
+      avatar: user.avatar,
+    },
+    token,
+  });
 };
 
 const updateLikes = async (req, res) => {
